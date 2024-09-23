@@ -7,7 +7,7 @@ export class ConfigDocument extends Document {
   settings: string;
 
   @Prop()
-  extensionsId: string[];
+  extensionIds: string[];
 
   @Prop({ expires: '1w' })
   createdAt: Date;
