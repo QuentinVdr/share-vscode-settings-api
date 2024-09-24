@@ -1,11 +1,11 @@
+import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import * as dotenv from 'dotenv';
 import { AppModule } from './app.module';
-dotenv.config();
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  const configService = app.get(ConfigService);
 
   const config = new DocumentBuilder()
     .setTitle('API Documentation')
@@ -17,7 +17,7 @@ async function bootstrap() {
 
   app.enableCors();
 
-  const port = process.env.PORT || 3000;
+  const port = configService.get<number>('PORT') || 3000;
   await app.listen(port);
 
   console.log(`🚀 ~ Application is running on: ${await app.getUrl()}`);
