@@ -11,6 +11,11 @@ export class VscodeConfigController {
     return this.vscodeConfigService.create(vscodeConfig);
   }
 
+  @Get()
+  async findAll(): Promise<VscodeConfig[]> {
+    return this.vscodeConfigService.findAll();
+  }
+
   @Get(':id')
   async findOne(@Param('id') id: string): Promise<VscodeConfig> {
     return this.vscodeConfigService.findById(id);

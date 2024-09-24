@@ -16,6 +16,10 @@ export class VscodeConfigService {
     return this.vscodeConfigModel.findById(id).exec();
   }
 
+  async findAll(): Promise<VscodeConfig[]> {
+    return this.vscodeConfigModel.find().exec();
+  }
+
   async delete(id: string) {
     this.vscodeConfigModel.findByIdAndDelete(id).exec();
   }
