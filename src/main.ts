@@ -4,12 +4,13 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { ApiKeyGuard } from './guards/api-key.guard';
+import { getNodeEnv } from './utils/environmentUtils';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
   app.useGlobalGuards(new ApiKeyGuard(configService));
-  Logger.log(`🚀 ~ ENV : ${configService.get('NODE_ENV')}`);
+  Logger.log(`🔧 ~ NODE ENV : ${getNodeEnv(configService)}`);
 
   const config = new DocumentBuilder()
     .setTitle('API Documentation')
@@ -19,8 +20,6 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
-
-  app.enableCors();
 
   const port = configService.get<number>('PORT') || 3000;
   await app.listen(port);
