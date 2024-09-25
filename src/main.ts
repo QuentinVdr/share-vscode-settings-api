@@ -8,6 +8,9 @@ import { getNodeEnv } from './utils/environmentUtils';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  app.enableCors();
+
   const configService = app.get(ConfigService);
   app.useGlobalGuards(new ApiKeyGuard(configService));
   Logger.log(`🔧 ~ NODE ENV : ${getNodeEnv(configService)}`);
