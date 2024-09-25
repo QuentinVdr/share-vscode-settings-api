@@ -1,8 +1,10 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { ApiSecurity } from '@nestjs/swagger';
 import { VscodeConfig } from './vscodeConfig.model';
 import { VscodeConfigService } from './vscodeConfig.service';
 
 @Controller('vscode-config')
+@ApiSecurity('X-API-Key')
 export class VscodeConfigController {
   constructor(private readonly vscodeConfigService: VscodeConfigService) {}
 

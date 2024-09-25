@@ -3,19 +3,19 @@ import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
-import { ApiTokenGuard } from './guards/apiTokenGuard';
+import { ApiKeyGuard } from './guards/api-key.guard';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
-  app.useGlobalGuards(new ApiTokenGuard(configService));
+  app.useGlobalGuards(new ApiKeyGuard(configService));
   Logger.log(`🚀 ~ ENV : ${configService.get('NODE_ENV')}`);
 
   const config = new DocumentBuilder()
     .setTitle('API Documentation')
     .setDescription('The API description')
     .setVersion('1.0')
-    .addBearerAuth()
+    .addApiKey({ type: 'apiKey', name: 'X-API-Key', in: 'header' }, 'X-API-Key')
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
